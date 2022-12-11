@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymRecipe - Mes Ingredients
+{% endblock %}
+{% block body %}
+    <div class="container mt-4">
+        <h1>Mes Ingredient</h1>
+
+			<a href="{{ path('ingredient.new') }}" class="btn btn-primary">
+				Créer un ingrédient
+			</a>
+            {# pass a string argument to get only the messages of that type #}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {# total items count #}
+            {% if not ingredients.items is same as([])  %}
+            <div class="count">
+                <div class="count mt-4">
+                    <h4>Il y'a {{ ingredients.getTotalItemCount }} ingredient(s) au total</h4>
+                </div>
+            </div>
+            <table class="table table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Numéro</font></font></th>
+                        <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nom</font></font></th>
+                        <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Prix</font></font></th>
+                        <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Date de création</font></font></th>
+                        <th scope="col">Edition</th>
+						<th scope="col">Suppresion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ingredient in ingredients %}
+                    <tr class="table-primary">
+                        <th scope="row"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ ingredient.id  }} </font></font></th>
+                        <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ ingredient.name }} </font></font></td>
+                        <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ ingredient.price }} </font></font></td>
+                        <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ ingredient.createdAt|date('d/m/y') }} </font></font></td>
+                        <td>
+                            <a href="{{ path('ingredient.edit', { id: ingredient.id }) }}" class="btn btn-info">Modifier</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('ingredient.delete', { id: ingredient.id }) }}" class="btn btn-warning">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>  
+            <div class="navigation d-flex justify-content-center mt-4">
+                {{ knp_pagination_render(ingredients) }}
+            </div> 
+             {% else %}
+                <h4>Il n' y a pas d'ingredients</h4>
+            {% endif %}    
+    </div>
+{% endblock %}
